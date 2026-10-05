@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CoffeeSurveyApp.SurveyPage"
+             x:Name="_SurveyPage_"
+             Title="Анкета о кофе">
+
+       <ScrollView x:Name="_MainScrollView_">
+
+              <VerticalStackLayout x:Name="_MainStack_"
+                                   Padding="20"
+                                   Spacing="14">
+
+                     <!-- ===================== HEADER (Grid) ===================== -->
+                     <Grid x:Name="_HeaderGrid_"
+                           RowDefinitions="Auto,Auto"
+                           ColumnDefinitions="100,*"
+                           Margin="0,0,0,10">
+
+                            <Image x:Name="_CoffeeImage_"
+                                   Grid.Row="0"
+                                   Grid.Column="0"
+                                   Grid.RowSpan="2"
+                                   Source="coffee_cup.png"
+                                   Aspect="AspectFit"
+                                   HeightRequest="90"
+                                   Margin="0,0,10,0"/>
+
+                            <Label x:Name="_TitleLabel_"
+                                   Grid.Row="0"
+                                   Grid.Column="1"
+                                   Text="Анкета предпочтений в кофе"
+                                   FontSize="22"
+                                   FontAttributes="Bold"
+                                   Margin="0,5,0,0"/>
+
+                            <Label x:Name="_SubtitleLabel_"
+                                   Grid.Row="1"
+                                   Grid.Column="1"
+                                   Text="Расскажите, какой кофе вы любите ☕"
+                                   FontSize="14"
+                                   FontAttributes="Italic"
+                                   Margin="0,2,0,0"/>
+                     </Grid>
+
+                     <!-- ===================== BASIC INFO ===================== -->
+                     <Entry x:Name="_NameEntry_"
+                            Placeholder="Полное имя"
+                            Keyboard="Text"
+                            MaxLength="50"
+                            Margin="0,5,0,0"
+                            TextChanged="OnRequiredFieldChanged"/>
+
+                     <Entry x:Name="_EmailEntry_"
+                            Placeholder="Электронная почта"
+                            Keyboard="Email"
+                            MaxLength="100"
+                            Margin="0,5,0,0"
+                            TextChanged="OnRequiredFieldChanged"/>
+
+                     <Editor x:Name="_CommentsEditor_"
+                             Placeholder="Дополнительные комментарии"
+                             AutoSize="TextChanges"
+                             MaxLength="300"
+                             Margin="0,5,0,0"/>
+
+                     <!-- ===================== COFFEE TYPE ===================== -->
+                     <Picker x:Name="_CoffeeTypePicker_"
+                             Title="Выберите любимый вид кофе"
+                             Margin="0,10,0,0">
+                            <Picker.Items>
+                                   <x:String>Эспрессо</x:String>
+                                   <x:String>Латте</x:String>
+                                   <x:String>Капучино</x:String>
+                                   <x:String>Американо</x:String>
+                            </Picker.Items>
+                     </Picker>
+
+                     <!-- ===================== STRENGTH (RadioButtons) ===================== -->
+                     <VerticalStackLayout x:Name="_StrengthStack_"
+                                   Spacing="4"
+                                   Margin="0,10,0,0">
+                            <Label x:Name="_StrengthLabel_"
+                                   Text="Крепость кофе:"
+                                   FontSize="16"
+                                   FontAttributes="Bold"/>
+
+                            <RadioButton x:Name="_LightRadio_"
+                                         Content="Слабая"
+                                         GroupName="StrengthGroup"
+                                         Value="Light"/>
+
+                            <RadioButton x:Name="_MediumRadio_"
+                                         Content="Средняя"
+                                         GroupName="StrengthGroup"
+                                         Value="Medium"
+                                         IsChecked="True"/>
+
+                            <RadioButton x:Name="_StrongRadio_"
+                                         Content="Крепкая"
+                                         GroupName="StrengthGroup"
+                                         Value="Strong"/>
+                     </VerticalStackLayout>
+
+                     <!-- ===================== EXTRAS (CheckBoxes) ===================== -->
+                     <HorizontalStackLayout x:Name="_ExtrasStack_"
+                                   Spacing="20"
+                                   Margin="0,10,0,0">
+
+                            <HorizontalStackLayout x:Name="_MilkStack_"
+                                          Spacing="4">
+                                   <CheckBox x:Name="_MilkCheck_"
+                                             IsChecked="False"
+                                             Color="SaddleBrown"/>
+                                   <Label x:Name="_MilkLabel_"
+                                          Text="Добавить молоко"
+                                          VerticalOptions="Center"/>
+                            </HorizontalStackLayout>
+
+                            <HorizontalStackLayout x:Name="_SugarStack_"
+                                          Spacing="4">
+                                   <CheckBox x:Name="_SugarCheck_"
+                                             IsChecked="False"
+                                             Color="Chocolate"/>
+                                   <Label x:Name="_SugarLabel_"
+                                          Text="Добавить сахар"
+                                          VerticalOptions="Center"/>
+                            </HorizontalStackLayout>
+
+                     </HorizontalStackLayout>
+
+                     <!-- ===================== NEWSLETTER (Switch) ===================== -->
+                     <HorizontalStackLayout x:Name="_NewsletterStack_"
+                                   Spacing="10"
+                                   Margin="0,10,0,0">
+                            <Label x:Name="_NewsletterLabel_"
+                                   Text="Подписаться на рассылку"
+                                   VerticalOptions="Center"/>
+                            <Switch x:Name="_NewsletterSwitch_"
+                                    IsToggled="False"
+                                    OnColor="SaddleBrown"/>
+                     </HorizontalStackLayout>
+
+                     <!-- ===================== BIRTH DATE ===================== -->
+                     <Label x:Name="_BirthDateLabel_"
+                                   Text="Дата рождения:"
+                                   FontSize="16"
+                                   FontAttributes="Bold"
+                                   Margin="0,10,0,0"/>
+                     <DatePicker x:Name="_BirthDatePicker_"
+                                 Format="dd/MM/yyyy"
+                                 Date="2000-01-01"
+                                 MinimumDate="1940-01-01"
+                                 MaximumDate="2026-10-06"/>
+
+                     <!-- ===================== CUPS PER DAY (Slider + x:Reference binding) ===================== -->
+                     <Label x:Name="_CupsCountLabel_"
+                            Text="{Binding Source={x:Reference _CupsSlider_}, Path=Value, Mode=OneWay, StringFormat='Чашек в день: {0:F0}'}"
+                            FontSize="16"
+                            Margin="0,10,0,0"/>
+
+                     <Slider x:Name="_CupsSlider_"
+                             Minimum="1"
+                             Maximum="10"
+                             Value="3"/>
+
+                     <!-- ===================== RESULT ===================== -->
+                     <Label x:Name="_ResultLabel_"
+                            Text=""
+                            FontSize="15"
+                            IsVisible="False"
+                            Margin="0,15,0,0"/>
+
+                     <!-- ===================== BUTTONS ===================== -->
+                     <HorizontalStackLayout x:Name="_ButtonsStack_"
+                                   Spacing="15"
+                                   Margin="0,15,0,20">
+                            <Button x:Name="_ShowResultButton_"
+                                    Text="Показать результат"
+                                    IsEnabled="False"
+                                    Clicked="ShowResultButton_Clicked"/>
+
+                            <Button x:Name="_ClearButton_"
+                                    Text="Очистить"
+                                    Clicked="ClearButton_Clicked"/>
+                     </HorizontalStackLayout>
+
+              </VerticalStackLayout>
+       </ScrollView>
+</ContentPage>
