@@ -19,17 +19,17 @@ namespace CoffeeSurveyApp
         // в зависимости от заполнения анкеты.
         private void OnRequiredFieldChanged(object? sender, TextChangedEventArgs e)
         {
-            bool nameFilled = !string.IsNullOrWhiteSpace(_NameEntry_.Text);
-            bool emailFilled = !string.IsNullOrWhiteSpace(_EmailEntry_.Text);
+            bool nameFilled = !string.IsNullOrWhiteSpace(NameEntry.Text);
+            bool emailFilled = !string.IsNullOrWhiteSpace(EmailEntry.Text);
 
-            _ShowResultButton_.IsEnabled = nameFilled && emailFilled;
+            ShowResultButton.IsEnabled = nameFilled && emailFilled;
         }
 
         private async void ShowResultButton_Clicked(object? sender, EventArgs e)
         {
             // Повторная проверка двух обязательных полей
-            if (string.IsNullOrWhiteSpace(_NameEntry_.Text) ||
-                string.IsNullOrWhiteSpace(_EmailEntry_.Text))
+            if (string.IsNullOrWhiteSpace(NameEntry.Text) ||
+                string.IsNullOrWhiteSpace(EmailEntry.Text))
             {
                 await DisplayAlertAsync("Не все данные заполнены",
                     "Пожалуйста, заполните имя и электронную почту перед показом результата.",
@@ -38,63 +38,63 @@ namespace CoffeeSurveyApp
             }
 
             string strength = "средняя";
-            if (_LightRadio_.IsChecked) strength = "слабая";
-            else if (_StrongRadio_.IsChecked) strength = "крепкая";
+            if (LightRadio.IsChecked) strength = "слабая";
+            else if (StrongRadio.IsChecked) strength = "крепкая";
 
-            string coffeeType = _CoffeeTypePicker_.SelectedItem?.ToString() ?? "не выбрано";
+            string coffeeType = CoffeeTypePicker.SelectedItem?.ToString() ?? "не выбрано";
 
             string extras = "без добавок";
-            if (_MilkCheck_.IsChecked && _SugarCheck_.IsChecked)
+            if (MilkCheck.IsChecked && SugarCheck.IsChecked)
                 extras = "молоко и сахар";
-            else if (_MilkCheck_.IsChecked)
+            else if (MilkCheck.IsChecked)
                 extras = "только молоко";
-            else if (_SugarCheck_.IsChecked)
+            else if (SugarCheck.IsChecked)
                 extras = "только сахар";
 
-            string newsletter = _NewsletterSwitch_.IsToggled ? "да" : "нет";
+            string newsletter = NewsletterSwitch.IsToggled ? "да" : "нет";
 
-            string comments = string.IsNullOrWhiteSpace(_CommentsEditor_.Text)
+            string comments = string.IsNullOrWhiteSpace(CommentsEditor.Text)
                 ? "нет"
-                : _CommentsEditor_.Text;
+                : CommentsEditor.Text;
 
             string summary =
-                $"Имя: {_NameEntry_.Text}\n" +
-                $"Электронная почта: {_EmailEntry_.Text}\n" +
+                $"Имя: {NameEntry.Text}\n" +
+                $"Электронная почта: {EmailEntry.Text}\n" +
                 $"Комментарии: {comments}\n" +
                 $"Любимый вид кофе: {coffeeType}\n" +
                 $"Крепость: {strength}\n" +
                 $"Добавки: {extras}\n" +
                 $"Подписка на рассылку: {newsletter}\n" +
-                $"Дата рождения: {_BirthDatePicker_.Date:dd.MM.yyyy}\n" +
-                $"Чашек в день: {_CupsSlider_.Value:F0}";
+                $"Дата рождения: {BirthDatePicker.Date:dd.MM.yyyy}\n" +
+                $"Чашек в день: {CupsSlider.Value:F0}";
 
-            _ResultLabel_.Text = summary;
-            _ResultLabel_.IsVisible = true;
+            ResultLabel.Text = summary;
+            ResultLabel.IsVisible = true;
         }
 
         private void ClearButton_Clicked(object? sender, EventArgs e)
         {
-            _NameEntry_.Text = string.Empty;
-            _EmailEntry_.Text = string.Empty;
-            _CommentsEditor_.Text = string.Empty;
+            NameEntry.Text = string.Empty;
+            EmailEntry.Text = string.Empty;
+            CommentsEditor.Text = string.Empty;
 
-            _CoffeeTypePicker_.SelectedItem = null;
+            CoffeeTypePicker.SelectedItem = null;
 
-            _MediumRadio_.IsChecked = true;
+            MediumRadio.IsChecked = true;
 
-            _MilkCheck_.IsChecked = false;
-            _SugarCheck_.IsChecked = false;
+            MilkCheck.IsChecked = false;
+            SugarCheck.IsChecked = false;
 
-            _NewsletterSwitch_.IsToggled = false;
+            NewsletterSwitch.IsToggled = false;
 
-            _BirthDatePicker_.Date = _defaultBirthDate;
+            BirthDatePicker.Date = _defaultBirthDate;
 
-            _CupsSlider_.Value = DefaultCupsValue;
+            CupsSlider.Value = DefaultCupsValue;
 
-            _ResultLabel_.Text = string.Empty;
-            _ResultLabel_.IsVisible = false;
+            ResultLabel.Text = string.Empty;
+            ResultLabel.IsVisible = false;
 
-            _ShowResultButton_.IsEnabled = false;
+            ShowResultButton.IsEnabled = false;
         }
     }
 }
